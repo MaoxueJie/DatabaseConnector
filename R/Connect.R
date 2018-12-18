@@ -204,6 +204,10 @@ connect <- function(connectionDetails = NULL,
                     connectionString = NULL,
                     pathToDriver = getOption("pathToDriver")) {
   if (!missing(connectionDetails) && !is.null(connectionDetails)) {
+	if (!missing(extraSettings) && !is.null(extraSettings) && (is.null(connectionDetails$extraSettings) || missing(connectionDetails$extraSettings)))
+	{
+		connectionDetails$extraSettings = extraSettings;
+	}
     connection <- connect(dbms = connectionDetails$dbms,
                           user = connectionDetails$user,
                           password = connectionDetails$password,
