@@ -73,6 +73,6 @@ getTableNames <- function(connection, databaseSchema) {
     tables <- c(tables, rJava::.jcall(resultSet, "S", "getString", "TABLE_NAME"))
   }
   writeLines(paste(databaseSchema,"---",database,"---",schema))
-  return(toupper(c(tables[1])))
+  return(toupper(tables))
   
 }
