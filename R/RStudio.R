@@ -79,6 +79,7 @@ listDatabaseConnectorColumns <- function(connection,
                                          schema = NULL,
                                          table = NULL,
                                          ...) {
+  writeLines(paste("listConnectorColumns",":",catalog,"---",schema,"---",table))
   if (connection@dbms == "oracle") {
     table <- toupper(table)
     if (!is.null(catalog)) {
@@ -123,6 +124,7 @@ listDatabaseConnectorColumns <- function(connection,
 
 
 listDatabaseConnectorObjects <- function(connection, catalog = NULL, schema = NULL, ...) {
+  writeLines(paste("listConnectorObjects",":",catalog,"---",schema))
   if (is.null(catalog) && hasCatalogs(connection)) {
     catalogs <- getCatalogs(connection)
     return(data.frame(name = catalogs,
@@ -147,6 +149,7 @@ listDatabaseConnectorObjects <- function(connection, catalog = NULL, schema = NU
 }
 
 listDatabaseConnectorObjectTypes <- function(connection) {
+  writeLines("listObjectTypes")
   types <- list(schema = list(contains = c(list(table = list(contains = "data")),
                                            list(view = list(contains = "data")))))
   if (hasCatalogs(connection)) {
