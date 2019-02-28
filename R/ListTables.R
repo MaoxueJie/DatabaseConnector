@@ -37,6 +37,7 @@
 #'
 #' @export
 getTableNames <- function(connection, databaseSchema) {
+	writeLines(paste("StartGetTableNames",":",databaseSchema,"---",database,"---",schema))
   if (is.null(databaseSchema)) {
     database <- rJava::.jnull("java/lang/String")
     schema <- rJava::.jnull("java/lang/String")
@@ -58,6 +59,7 @@ getTableNames <- function(connection, databaseSchema) {
       schema <- databaseSchema[2]
     }
   }
+  writeLines(paste("MinGetTableNames",":",databaseSchema,"---",database,"---",schema))
   metaData <- rJava::.jcall(connection@jConnection, "Ljava/sql/DatabaseMetaData;", "getMetaData")
   types <- rJava::.jarray(c("TABLE", "VIEW"))
   resultSet <- rJava::.jcall(metaData,
@@ -74,5 +76,4 @@ getTableNames <- function(connection, databaseSchema) {
   }
   writeLines(paste("getTableNames",":",databaseSchema,"---",database,"---",schema))
   return(toupper(tables))
-  
 }

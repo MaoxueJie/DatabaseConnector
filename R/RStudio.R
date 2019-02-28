@@ -154,16 +154,7 @@ listDatabaseConnectorObjects <- function(connection, catalog = NULL, schema = NU
 }
 
 listDatabaseConnectorObjectTypes <- function(connection) {
-  writeLines("listObjectTypes")
-  metaData <- rJava::.jcall(connection@jConnection, "Ljava/sql/DatabaseMetaData;", "getMetaData")
-  resultSet <- rJava::.jcall(metaData, "Ljava/sql/ResultSet;", "getSchemas")
-  on.exit(rJava::.jcall(resultSet, "V", "close"))
-
-  while (rJava::.jcall(resultSet, "Z", "next")) {
-	  writeLines(rJava::.jcall(resultSet, "S", "getString", "TABLE_SCHEM"))
-  }
-  
-  
+  writeLines("listObjectTypes")  
   types <- list(schema = list(contains = c(list(table = list(contains = "data")),
                                            list(view = list(contains = "data")))))
   if (hasCatalogs(connection)) {
