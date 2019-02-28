@@ -132,19 +132,15 @@ listDatabaseConnectorObjects <- function(connection, catalog = NULL, schema = NU
                       stringsAsFactors = FALSE))
   }else
   {
-	  ##writeLines("catalog not null")
+	  writeLines("catalog not null")
   }
   if (is.null(schema)) {
     schemas <- getSchemaNames(connection, catalog)
-	for(schema_ in schemas)
-	{
-		writeLines(schema_)
-	}
     return(data.frame(name = schemas,
                       type = rep("schema", times = length(schemas)),
                       stringsAsFactors = FALSE))
   }else{
-	  ##writeLines("schema not null")		  
+	  writeLines("schema not null")		  
   }
   if (!hasCatalogs(connection) || connection@dbms %in% c("postgresql", "redshift")) {
     databaseSchema <- schema
@@ -220,6 +216,7 @@ getSchemaNames <- function(conn, catalog = NULL) {
   schemas <- character()
   while (rJava::.jcall(resultSet, "Z", "next")) {
     thisCatalog <- rJava::.jcall(resultSet, "S", "getString", "TABLE_CATALOG")
+	writeLines(paste("getSchemaNames",":",thisCatalog,"---",catalog))
     if (is.null(thisCatalog) || (!is.null(catalog) && thisCatalog == catalog)) {
       schemas <- c(schemas, rJava::.jcall(resultSet, "S", "getString", "TABLE_SCHEM"))
     }
