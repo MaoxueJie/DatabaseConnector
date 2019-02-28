@@ -130,12 +130,17 @@ listDatabaseConnectorObjects <- function(connection, catalog = NULL, schema = NU
     return(data.frame(name = catalogs,
                       type = rep("catalog", times = length(catalogs)),
                       stringsAsFactors = FALSE))
+  }else
+  {
+	  writeLines("catalog not null")
   }
   if (is.null(schema)) {
     schemas <- getSchemaNames(connection, catalog)
     return(data.frame(name = schemas,
                       type = rep("schema", times = length(schemas)),
                       stringsAsFactors = FALSE))
+  }else{
+	  writeLines("schema not null")		  
   }
   if (!hasCatalogs(connection) || connection@dbms %in% c("postgresql", "redshift")) {
     databaseSchema <- schema
