@@ -2,4 +2,8 @@
 .Rhistory
 .RData
 R/LocalEnvironment.R
-/bin/
+bin/
+target/
+.settings/
+.classpath
+.project

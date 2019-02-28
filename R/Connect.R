@@ -65,7 +65,8 @@ createConnectionDetails <- function(dbms,
                                     extraSettings = NULL,
                                     oracleDriver = "thin",
                                     connectionString = NULL,
-                                    pathToDriver = getOption("pathToDriver")) {
+                                    pathToDriver = getOption("pathToDriver"),
+									encryption=NULL) {
   # First: get default values:
   result <- list()
   for (name in names(formals(createConnectionDetails))) {
@@ -208,16 +209,35 @@ connect <- function(connectionDetails = NULL,
 	{
 		connectionDetails$extraSettings = extraSettings;
 	}
-    connection <- connect(dbms = connectionDetails$dbms,
-                          user = connectionDetails$user,
-                          password = connectionDetails$password,
-                          server = connectionDetails$server,
-                          port = connectionDetails$port,
-                          schema = connectionDetails$schema,
-                          extraSettings = connectionDetails$extraSettings,
-                          oracleDriver = connectionDetails$oracleDriver,
-                          connectionString = connectionDetails$connectionString,
-                          pathToDriver = connectionDetails$pathToDriver)
+	connection <- NULL
+	if (!is.null(connectionDetails$encryption))
+	{
+		desUtil = rJava::.jnew("org.ohdsi.databaseConnector.DESUtil")
+		connection <- connect(dbms = connectionDetails$dbms,
+				user = rJava::.jcall(desUtil, "Ljava/lang/String;", "decrypt",connectionDetails$encryption$user),
+				password = rJava::.jcall(desUtil, "Ljava/lang/String;", "decrypt",connectionDetails$encryption$password),
+				server = rJava::.jcall(desUtil, "Ljava/lang/String;", "decrypt",connectionDetails$encryption$server),
+				port = rJava::.jcall(desUtil, "Ljava/lang/String;", "decrypt",connectionDetails$encryption$port),
+				schema = connectionDetails$schema,
+				extraSettings = connectionDetails$extraSettings,
+				oracleDriver = connectionDetails$oracleDriver,
+				connectionString = connectionDetails$connectionString,
+				pathToDriver = connectionDetails$pathToDriver)
+	}else
+	{
+		connection <- connect(dbms = connectionDetails$dbms,
+				user = connectionDetails$user,
+				password = connectionDetails$password,
+				server = connectionDetails$server,
+				port = connectionDetails$port,
+				schema = connectionDetails$schema,
+				extraSettings = connectionDetails$extraSettings,
+				oracleDriver = connectionDetails$oracleDriver,
+				connectionString = connectionDetails$connectionString,
+				pathToDriver = connectionDetails$pathToDriver)
+	}
+	
+    
     
     return(connection)
   }
