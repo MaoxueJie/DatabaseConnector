@@ -49,16 +49,22 @@ getTableNames <- function(connection, databaseSchema) {
     databaseSchema <- strsplit(databaseSchema, "\\.")[[1]]
 	writeLines("MinGetTableNames2")
     if (length(databaseSchema) == 1) {
+		writeLines("MinGetTableNames3")
       if (connection@dbms %in% c("sql server", "pdw")) {
+		  writeLines("MinGetTableNames7")
         database <- databaseSchema
         schema <- "dbo"
       } else {
+		  writeLines("MinGetTableNames8")
         database <- rJava::.jnull("java/lang/String")
         schema <- databaseSchema
       }
+	  writeLines("MinGetTableNames4")
     } else {
+	  writeLines("MinGetTableNames5")
       database <- databaseSchema[1]
       schema <- databaseSchema[2]
+	  writeLines("MinGetTableNames6")
     }
   }
   writeLines(paste("MinGetTableNames",":",databaseSchema,"---",database,"---",schema))
