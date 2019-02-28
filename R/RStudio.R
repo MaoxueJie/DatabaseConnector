@@ -215,11 +215,12 @@ getSchemaNames <- function(conn, catalog = NULL) {
   on.exit(rJava::.jcall(resultSet, "V", "close"))
   schemas <- character()
   while (rJava::.jcall(resultSet, "Z", "next")) {
+	tableSechema = rJava::.jcall(resultSet, "S", "getString", "TABLE_SCHEM")
     thisCatalog <- rJava::.jcall(resultSet, "S", "getString", "TABLE_CATALOG")
 	writeLines(paste("getSchemaNames",":",thisCatalog,"---",catalog))
     if (is.null(thisCatalog) || (!is.null(catalog) && thisCatalog == catalog)) {
-	  writeLines(paste("TABLE_SCHEM",":",rJava::.jcall(resultSet, "S", "getString", "TABLE_SCHEM")))
-      schemas <- c(schemas, rJava::.jcall(resultSet, "S", "getString", "TABLE_SCHEM"))
+	  writeLines(paste("TABLE_SCHEM",":",tableSechema))
+      schemas <- c(schemas, tableSechema)
     }
   }
   return(schemas)
