@@ -45,7 +45,9 @@ getTableNames <- function(connection, databaseSchema) {
     if (connection@dbms == "oracle") {
       databaseSchema <- toupper(databaseSchema)
     }
+	writeLines("MinGetTableNames1")
     databaseSchema <- strsplit(databaseSchema, "\\.")[[1]]
+	writeLines("MinGetTableNames2")
     if (length(databaseSchema) == 1) {
       if (connection@dbms %in% c("sql server", "pdw")) {
         database <- databaseSchema
