@@ -1,9 +1,9 @@
+target
+.settings
+.classpath
+.project
 .Rproj.user
 .Rhistory
 .RData
 R/LocalEnvironment.R
-bin/
-target/
-.settings/
-.classpath
-.project
+bin

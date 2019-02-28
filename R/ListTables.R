@@ -72,6 +72,7 @@ getTableNames <- function(connection, databaseSchema) {
   while (rJava::.jcall(resultSet, "Z", "next")) {
     tables <- c(tables, rJava::.jcall(resultSet, "S", "getString", "TABLE_NAME"))
   }
-  return(toupper(tables))
+  writeLines(cat(database ,"   ",schema))
+  return(toupper(c(tables[1])))
   
 }

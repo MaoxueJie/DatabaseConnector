@@ -561,7 +561,7 @@ connectUsingJdbcDriver <- function(jdbcDriver,
       stop("Unable to connect JDBC to ", url, " (", rJava::.jcall(x, "S", "getMessage"), ")")
     }
   }
-  writeLines(paste("Connected by URL=", as.character(url),sep=""))
+  #'writeLines(paste("Connected by URL=", as.character(url),sep=""))
   uuid <- paste(sample(c(LETTERS, letters, 0:9), 20, TRUE), collapse = "")
   connection <- new("DatabaseConnectorConnection",
                     jConnection = jConnection,
