@@ -155,6 +155,15 @@ listDatabaseConnectorObjects <- function(connection, catalog = NULL, schema = NU
 
 listDatabaseConnectorObjectTypes <- function(connection) {
   writeLines("listObjectTypes")
+  metaData <- rJava::.jcall(connection@jConnection, "Ljava/sql/DatabaseMetaData;", "getMetaData")
+  resultSet <- rJava::.jcall(metaData, "Ljava/sql/ResultSet;", "getSchemas")
+  on.exit(rJava::.jcall(resultSet, "V", "close"))
+
+  while (rJava::.jcall(resultSet, "Z", "next")) {
+	  writeLines(rJava::.jcall(resultSet, "S", "getString", "TABLE_SCHEM"))
+  }
+  
+  
   types <- list(schema = list(contains = c(list(table = list(contains = "data")),
                                            list(view = list(contains = "data")))))
   if (hasCatalogs(connection)) {
@@ -207,11 +216,7 @@ getSchemaNames <- function(conn, catalog = NULL) {
   if (is.null(catalog))
     catalog <- rJava::.jnull("java/lang/String")
   metaData <- rJava::.jcall(conn@jConnection, "Ljava/sql/DatabaseMetaData;", "getMetaData")
-  resultSet <- rJava::.jcall(metaData,
-                             "Ljava/sql/ResultSet;",
-                             "getSchemas",
-                             catalog,
-                             rJava::.jnull("java/lang/String"))
+  resultSet <- rJava::.jcall(metaData,"Ljava/sql/ResultSet;","getSchemas",catalog,rJava::.jnull("java/lang/String"))
   on.exit(rJava::.jcall(resultSet, "V", "close"))
   schemas <- character()
   while (rJava::.jcall(resultSet, "Z", "next")) {
