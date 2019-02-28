@@ -218,6 +218,7 @@ getSchemaNames <- function(conn, catalog = NULL) {
     thisCatalog <- rJava::.jcall(resultSet, "S", "getString", "TABLE_CATALOG")
 	writeLines(paste("getSchemaNames",":",thisCatalog,"---",catalog))
     if (is.null(thisCatalog) || (!is.null(catalog) && thisCatalog == catalog)) {
+	  writeLines(paste("TABLE_SCHEM",":",rJava::.jcall(resultSet, "S", "getString", "TABLE_SCHEM")))
       schemas <- c(schemas, rJava::.jcall(resultSet, "S", "getString", "TABLE_SCHEM"))
     }
   }
