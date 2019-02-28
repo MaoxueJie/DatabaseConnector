@@ -37,7 +37,7 @@
 #'
 #' @export
 getTableNames <- function(connection, databaseSchema) {
-	writeLines(paste("StartGetTableNames",":",databaseSchema,"---",schema))
+	writeLines(paste("StartGetTableNames",":",databaseSchema,"---"))
   if (is.null(databaseSchema)) {
     database <- rJava::.jnull("java/lang/String")
     schema <- rJava::.jnull("java/lang/String")
