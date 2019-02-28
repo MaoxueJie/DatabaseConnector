@@ -37,7 +37,7 @@
 #'
 #' @export
 getTableNames <- function(connection, databaseSchema) {
-	writeLines(paste("StartGetTableNames",":",databaseSchema,"---"))
+  writeLines(paste("StartGetTableNames",":",databaseSchema,"---"))
   if (is.null(databaseSchema)) {
     database <- rJava::.jnull("java/lang/String")
     schema <- rJava::.jnull("java/lang/String")
@@ -45,29 +45,20 @@ getTableNames <- function(connection, databaseSchema) {
     if (connection@dbms == "oracle") {
       databaseSchema <- toupper(databaseSchema)
     }
-	writeLines("MinGetTableNames1")
     databaseSchema <- strsplit(databaseSchema, "\\.")[[1]]
-	writeLines("MinGetTableNames2")
     if (length(databaseSchema) == 1) {
-		writeLines("MinGetTableNames3")
       if (connection@dbms %in% c("sql server", "pdw")) {
-		  writeLines("MinGetTableNames7")
         database <- databaseSchema
         schema <- "dbo"
       } else {
-		  writeLines("MinGetTableNames8")
         database <- rJava::.jnull("java/lang/String")
         schema <- databaseSchema
       }
-	  writeLines("MinGetTableNames4")
     } else {
-	  writeLines("MinGetTableNames5")
       database <- databaseSchema[1]
       schema <- databaseSchema[2]
-	  writeLines("MinGetTableNames6")
     }
   }
-  writeLines(paste("MinGetTableNames",":",databaseSchema,"---",database,"---",schema))
   metaData <- rJava::.jcall(connection@jConnection, "Ljava/sql/DatabaseMetaData;", "getMetaData")
   types <- rJava::.jarray(c("TABLE", "VIEW"))
   resultSet <- rJava::.jcall(metaData,
@@ -82,6 +73,5 @@ getTableNames <- function(connection, databaseSchema) {
   while (rJava::.jcall(resultSet, "Z", "next")) {
     tables <- c(tables, rJava::.jcall(resultSet, "S", "getString", "TABLE_NAME"))
   }
-  writeLines(paste("getTableNames",":",databaseSchema,"---",database,"---",schema))
   return(toupper(tables))
 }
