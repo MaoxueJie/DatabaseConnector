@@ -159,7 +159,7 @@ listDatabaseConnectorObjectTypes <- function(connection) {
 }
 
 previewObject <- function(connection, rowLimit, catalog = NULL, table = NULL, schema = NULL) {
-  if (!hasCatalogs(connection) || connection$dbms == "postgresql") {
+  if (!hasCatalogs(connection) || connection@dbms %in% c("postgresql")) {
     databaseSchema <- schema
   } else {
     databaseSchema <- paste(catalog, schema, sep = ".")
