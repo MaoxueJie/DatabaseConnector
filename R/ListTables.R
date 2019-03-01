@@ -70,7 +70,9 @@ getTableNames <- function(connection, databaseSchema) {
                              check = FALSE)
   tables <- character()
   while (rJava::.jcall(resultSet, "Z", "next")) {
-    tables <- c(tables, rJava::.jcall(resultSet, "S", "getString", "TABLE_NAME"))
+	tableName <- rJava::.jcall(resultSet, "S", "getString", "TABLE_NAME")
+	if (tableName %in% cdmTables)
+    	tables <- c(tables, tableName)
   }
   return(toupper(tables))
 }
