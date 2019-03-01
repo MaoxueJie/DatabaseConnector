@@ -167,7 +167,7 @@ previewObject <- function(connection, rowLimit, catalog = NULL, table = NULL, sc
   sql <- NULL
   if (connection@dbms %in% c("postgresql"))
   {
-	  sql <- "SELECT * FROM @databaseSchema.@table limit 1000;"
+	  sql <- "SELECT * FROM @databaseSchema.@table limit 1000"
   }else
   {
 	  sql <- "SELECT TOP 1000 * FROM @databaseSchema.@table;"
