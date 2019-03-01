@@ -164,12 +164,9 @@ previewObject <- function(connection, rowLimit, catalog = NULL, table = NULL, sc
   } else {
     databaseSchema <- paste(catalog, schema, sep = ".")
   }
-  sql <- "SELECT TOP 1000 * FROM @databaseSchema.@table"
-  writeLines(sql);
-  sql <- SqlRender::renderSql(sql = sql, databaseSchema = databaseSchema, table = table)$sql
-  writeLines(sql);
-  sql <- SqlRender::translateSql(sql = sql, targetDialect = connection@dbms)$sql
-  writeLines(sql);
+  sql <- "SELECT TOP 1000 * FROM @databaseSchema.@table;"
+  sql <- SqlRender::render(sql = sql, databaseSchema = databaseSchema, table = table)
+  sql <- SqlRender::translate(sql = sql, targetDialect = connection@dbms)
   querySql(connection, sql)
 }
 
