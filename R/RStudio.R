@@ -191,12 +191,9 @@ compileReconnectCode <- function(connection) {
   databaseMetaData <- rJava::.jcall(connection@jConnection,
                                     "Ljava/sql/DatabaseMetaData;",
                                     "getMetaData")
-  url <- rJava::.jcall(databaseMetaData, "Ljava/lang/String;", "getURL")
-  user <- rJava::.jcall(databaseMetaData, "Ljava/lang/String;", "getUserName")
-  code <- sprintf("con <- library(DatabaseConnector)\nconnect(dbms = \"%s\", connectionString = \"%s\", user = \"%s\", password = password)",
-                  connection@dbms,
-                  url,
-                  user)
+  ##url <- rJava::.jcall(databaseMetaData, "Ljava/lang/String;", "getURL")
+  ##user <- rJava::.jcall(databaseMetaData, "Ljava/lang/String;", "getUserName")
+  code <- sprintf("con <- library(DatabaseConnector)\nconnect(connectionDetails)")
   return(code)
 }
 
