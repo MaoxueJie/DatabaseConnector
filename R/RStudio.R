@@ -198,26 +198,23 @@ compileReconnectCode <- function(connection) {
 }
 
 getSchemaNames <- function(conn, catalog = NULL) {
-  for(i in schemas)
-  {
-	 writeLines(i)
-  }
   if (is.null(catalog))
     catalog <- rJava::.jnull("java/lang/String")
   metaData <- rJava::.jcall(conn@jConnection, "Ljava/sql/DatabaseMetaData;", "getMetaData")
   resultSet <- rJava::.jcall(metaData,"Ljava/sql/ResultSet;","getSchemas",catalog,rJava::.jnull("java/lang/String"))
   on.exit(rJava::.jcall(resultSet, "V", "close"))
-  schemas <- character()
+  tableSchemas <- character()
   while (rJava::.jcall(resultSet, "Z", "next")) {
 	tableSechema = rJava::.jcall(resultSet, "S", "getString", "TABLE_SCHEM")
     thisCatalog <- rJava::.jcall(resultSet, "S", "getString", "TABLE_CATALOG")
 	##writeLines(paste("getSchemaNames",":",thisCatalog,"---",catalog))
     if (is.null(thisCatalog) || (!is.null(catalog) && thisCatalog == catalog)) {
 	  ##writeLines(paste("TABLE_SCHEM",":",tableSechema))
-      schemas <- c(schemas, tableSechema)
+	  if (tableSechema %in% schemas)
+	  	tableSchemas <- c(tableSchemas, tableSechema)
     }
   }
-  return(schemas)
+  return(tableSchemas)
 }
 
 getCatalogs <- function(conn) {
