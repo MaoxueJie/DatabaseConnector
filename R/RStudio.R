@@ -167,7 +167,7 @@ previewObject <- function(connection, rowLimit, catalog = NULL, table = NULL, sc
   sql <- "SELECT TOP 1000 * FROM @databaseSchema.@table;"
   sql <- SqlRender::renderSql(sql = sql, databaseSchema = databaseSchema, table = table)$sql
   sql <- SqlRender::translateSql(sql = sql, targetDialect = connection@dbms)$sql
-  writeLine(sql)
+  writeLines(sql)
   querySql(connection, sql)
 }
 
