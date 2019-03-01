@@ -198,6 +198,10 @@ compileReconnectCode <- function(connection) {
 }
 
 getSchemaNames <- function(conn, catalog = NULL) {
+  for(i in schemas)
+  {
+	 writeLines(i)
+  }
   if (is.null(catalog))
     catalog <- rJava::.jnull("java/lang/String")
   metaData <- rJava::.jcall(conn@jConnection, "Ljava/sql/DatabaseMetaData;", "getMetaData")
