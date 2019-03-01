@@ -193,7 +193,7 @@ compileReconnectCode <- function(connection) {
                                     "getMetaData")
   ##url <- rJava::.jcall(databaseMetaData, "Ljava/lang/String;", "getURL")
   ##user <- rJava::.jcall(databaseMetaData, "Ljava/lang/String;", "getUserName")
-  code <- sprintf("con <- connect(connectionDetails)")
+  code <- sprintf("connect(connectionDetails)")
   return(code)
 }
 
