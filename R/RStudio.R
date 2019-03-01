@@ -79,7 +79,7 @@ listDatabaseConnectorColumns <- function(connection,
                                          schema = NULL,
                                          table = NULL,
                                          ...) {
-  writeLines(paste("listConnectorColumns",":",catalog,"---",schema,"---",table))
+  ##writeLines(paste("listConnectorColumns",":",catalog,"---",schema,"---",table))
   if (connection@dbms == "oracle") {
     table <- toupper(table)
     if (!is.null(catalog)) {
@@ -124,23 +124,18 @@ listDatabaseConnectorColumns <- function(connection,
 
 
 listDatabaseConnectorObjects <- function(connection, catalog = NULL, schema = NULL, ...) {
-  writeLines(paste("listConnectorObjects",":",catalog,"---",schema))
+  ##writeLines(paste("listConnectorObjects",":",catalog,"---",schema))
   if (is.null(catalog) && hasCatalogs(connection)) {
     catalogs <- getCatalogs(connection)
     return(data.frame(name = catalogs,
                       type = rep("catalog", times = length(catalogs)),
                       stringsAsFactors = FALSE))
-  }else
-  {
-	  writeLines("catalog not null")
   }
   if (is.null(schema)) {
     schemas <- getSchemaNames(connection, catalog)
     return(data.frame(name = schemas,
                       type = rep("schema", times = length(schemas)),
                       stringsAsFactors = FALSE))
-  }else{
-	  writeLines("schema not null")		  
   }
   if (!hasCatalogs(connection) || connection@dbms %in% c("postgresql", "redshift")) {
     databaseSchema <- schema
@@ -154,7 +149,7 @@ listDatabaseConnectorObjects <- function(connection, catalog = NULL, schema = NU
 }
 
 listDatabaseConnectorObjectTypes <- function(connection) {
-  writeLines("listObjectTypes")  
+  ##writeLines("listObjectTypes")  
   types <- list(schema = list(contains = c(list(table = list(contains = "data")),
                                            list(view = list(contains = "data")))))
   if (hasCatalogs(connection)) {
@@ -164,7 +159,7 @@ listDatabaseConnectorObjectTypes <- function(connection) {
 }
 
 previewObject <- function(connection, rowLimit, catalog = NULL, table = NULL, schema = NULL) {
-  if (!hasCatalogs(connection)) {
+  if (!hasCatalogs(connection) || connection$dbms == "postgresql") {
     databaseSchema <- schema
   } else {
     databaseSchema <- paste(catalog, schema, sep = ".")
@@ -213,9 +208,9 @@ getSchemaNames <- function(conn, catalog = NULL) {
   while (rJava::.jcall(resultSet, "Z", "next")) {
 	tableSechema = rJava::.jcall(resultSet, "S", "getString", "TABLE_SCHEM")
     thisCatalog <- rJava::.jcall(resultSet, "S", "getString", "TABLE_CATALOG")
-	writeLines(paste("getSchemaNames",":",thisCatalog,"---",catalog))
+	##writeLines(paste("getSchemaNames",":",thisCatalog,"---",catalog))
     if (is.null(thisCatalog) || (!is.null(catalog) && thisCatalog == catalog)) {
-	  writeLines(paste("TABLE_SCHEM",":",tableSechema))
+	  ##writeLines(paste("TABLE_SCHEM",":",tableSechema))
       schemas <- c(schemas, tableSechema)
     }
   }
