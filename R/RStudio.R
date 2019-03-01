@@ -213,7 +213,7 @@ getSchemaNames <- function(conn, catalog = NULL) {
 	##writeLines(paste("getSchemaNames",":",thisCatalog,"---",catalog))
     if (is.null(thisCatalog) || (!is.null(catalog) && thisCatalog == catalog)) {
 	  ##writeLines(paste("TABLE_SCHEM",":",tableSechema))
-	  if (tableSechema %in% schemas)
+	  if (tableSechema %in% cdmSchemas)
 	  	tableSchemas <- c(tableSchemas, tableSechema)
     }
   }
