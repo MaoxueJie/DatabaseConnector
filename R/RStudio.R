@@ -158,26 +158,18 @@ listDatabaseConnectorObjectTypes <- function(connection) {
   return(types)
 }
 
+
+##connection@dbms %in% c("postgresql")
 previewObject <- function(connection, rowLimit, catalog = NULL, table = NULL, schema = NULL) {
-  if (!hasCatalogs(connection) || connection@dbms %in% c("postgresql")) {
-    databaseSchema <- schema
-  } else {
-    databaseSchema <- paste(catalog, schema, sep = ".")
-  }
-  sql <- NULL
-  if (connection@dbms %in% c("postgresql"))
-  {
-	  sql <- "SELECT * FROM @databaseSchema.@table limit 1"
-  }else
-  {
-	  sql <- "SELECT TOP 1000 * FROM @databaseSchema.@table;"
-  }
-  writeLines(sql);
-  sql <- SqlRender::renderSql(sql = sql, databaseSchema = databaseSchema, table = table)$sql
-  writeLines(sql);
-  sql <- SqlRender::translateSql(sql = sql, targetDialect = connection@dbms)$sql
-  writeLines(sql);
-  querySql(connection, sql)
+	if (!hasCatalogs(connection)) {
+		databaseSchema <- schema
+	} else {
+		databaseSchema <- paste(catalog, schema, sep = ".")
+	}
+	sql <- "SELECT TOP 1000 * FROM @databaseSchema.@table;"
+	sql <- SqlRender::renderSql(sql = sql, databaseSchema = databaseSchema, table = table)$sql
+	sql <- SqlRender::translateSql(sql = sql, targetDialect = connection@dbms)$sql
+	querySql(connection, sql)
 }
 
 connectionActions <- function(connection) {
