@@ -31,7 +31,7 @@ public class BatchedQuery {
 	private boolean					done;
 
 	private void reserveMemory() {
-		System.gc();
+		//System.gc();
 		long available = Runtime.getRuntime().maxMemory() - (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
 		int bytesPerRow = 0;
 		for (int columnIndex = 0; columnIndex < columnTypes.length; columnIndex++)
