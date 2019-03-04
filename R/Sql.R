@@ -159,19 +159,15 @@ lowLevelQuerySql.ffdf <- function(connection, query = "", datesAsString = FALSE)
 lowLevelQuerySql <- function(connection, query = "", datesAsString = FALSE) {
   if (rJava::is.jnull(connection@jConnection))
     stop("Connection is closed")
-  writeLines("1")
   batchedQuery <- rJava::.jnew("org.ohdsi.databaseConnector.BatchedQuery",
                                connection@jConnection,
                                query)
-  writeLines("2")
   on.exit(rJava::.jcall(batchedQuery, "V", "clear"))
   
   columnTypes <- rJava::.jcall(batchedQuery, "[I", "getColumnTypes")
   columns <- vector("list", length(columnTypes))
-  writeLines("3")
   while (!rJava::.jcall(batchedQuery, "Z", "isDone")) {
     rJava::.jcall(batchedQuery, "V", "fetchBatch")
-	writeLines("6")
     for (i in seq.int(length(columnTypes))) {
       if (columnTypes[i] == 1) {
         column <- rJava::.jcall(batchedQuery,
@@ -187,7 +183,6 @@ lowLevelQuerySql <- function(connection, query = "", datesAsString = FALSE) {
       }
     }
   }
-  writeLines("4")
   if (!datesAsString) {
     for (i in seq.int(length(columnTypes))) {
       if (columnTypes[i] == 3) {
@@ -197,7 +192,6 @@ lowLevelQuerySql <- function(connection, query = "", datesAsString = FALSE) {
       }
     }
   }
-  writeLines("5")
   names(columns) <- rJava::.jcall(batchedQuery, "[Ljava/lang/String;", "getColumnNames")
   attr(columns, "row.names") <- c(NA_integer_, length(columns[[1]]))
   class(columns) <- "data.frame"
