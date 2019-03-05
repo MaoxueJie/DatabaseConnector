@@ -2,7 +2,7 @@
 
 export(DatabaseConnectorDriver)
 export(connect)
-export(connectDB)
+export(db)
 export(createConnectionDetails)
 export(createZipFile)
 export(disconnect)

@@ -15,7 +15,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-connectDB <-function(){
+db <-function(){
 	con <- connect(connectionDetails)
 	return(con)
 }
@@ -196,7 +196,7 @@ compileReconnectCode <- function(connection) {
                                     "getMetaData")
   ##url <- rJava::.jcall(databaseMetaData, "Ljava/lang/String;", "getURL")
   ##user <- rJava::.jcall(databaseMetaData, "Ljava/lang/String;", "getUserName")
-  code <- sprintf("connectDB()")
+  code <- sprintf("db()")
   return(code)
 }
 
