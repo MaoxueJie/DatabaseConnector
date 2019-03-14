@@ -29,11 +29,12 @@ registerWithRStudio <- function(connection) {
     }
     server <- getServer(connection)
     displayName <- server
-    i <- 1
-    while (displayName %in% registeredDisplayNames$displayName) {
-      i <- i + 1
-      displayName <- paste0(server, " (", i, ")")
-    }
+	
+	##i <- 1
+	##while (displayName %in% registeredDisplayNames$displayName) {
+	## i <- i + 1
+    ##  displayName <- paste0(server, " (", i, ")")
+    ##}
     registeredDisplayNames <- rbind(registeredDisplayNames,
                                     data.frame(uuid = connection@uuid,
                                                displayName = displayName,
