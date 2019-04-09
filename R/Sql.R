@@ -41,6 +41,7 @@
   writeChar(report, fileConn, eos = NULL)
   close(fileConn)
   stop(paste("Error executing SQL:",
+			 sql,
              message,
              paste("An error report has been created at ", fileName),
              sep = "\n"), call. = FALSE)
