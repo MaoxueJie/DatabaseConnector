@@ -36,6 +36,7 @@
 
 .createErrorReport <- function(dbms, message, sql, fileName) {
   report <- c("DBMS:\n", dbms, "\n\nError:\n", message, "\n\nSQL:\n", sql, "\n\n", .systemInfo())
+  file.create(fileName)
   fileConn <- file(fileName)
   writeChar(report, fileConn, eos = NULL)
   close(fileConn)
